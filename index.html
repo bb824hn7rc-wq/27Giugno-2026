@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Invito Samantha & Domenico</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&family=Playfair+Display:italic,wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --olive-dark: #556b2f;  
+            --olive-light: #8f9e72; 
+            --olive-bg: #f4f5f0;    
+            --gold: #c5a059;
+            --text-color: #444;
+        }
+
+        body, html {
+            margin: 0; padding: 0;
+            height: 100%; width: 100%;
+            background-color: var(--olive-bg);
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            display: flex; justify-content: center;
+        }
+
+        /* Contenitore principale abbassato */
+        .wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 360px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; 
+            padding-bottom: 120px; /* Busta posizionata più in basso */
+        }
+
+        /* BUSTA */
+        .envelope {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background-color: var(--olive-light);
+            margin: 0 auto;
+            cursor: pointer;
+            z-index: 10;
+            transition: transform 0.8s ease-in-out;
+        }
+
+        .envelope.open { transform: translateY(100px); }
+
+        .envelope::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 0; height: 0;
+            border-top: 110px solid #7d8c60;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            z-index: 40; 
+            transform-origin: top;
+            transition: transform 0.6s ease-in-out;
+        }
+
+        .envelope.open::before { transform: rotateX(180deg); z-index: 5; }
+
+        .envelope::after {
+            content: "";
+            position: absolute;
+            bottom: 0; left: 0; width: 0; height: 0;
+            border-bottom: 100px solid var(--olive-light);
+            border-left: 150px solid var(--olive-light);
+            border-right: 150px solid var(--olive-light);
+            z-index: 30;
+        }
+
+        .seal {
+            position: absolute;
+            top: 85px; left: 50%;
+            transform: translateX(-50%);
+            width: 50px; height: 50px;
+            background: var(--gold);
+            border-radius: 50%;
+            z-index: 50;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .seal span { font-family: 'Great Vibes', cursive; color: #fff; font-size: 16px; }
+
+        /* BIGLIETTO - NUOVA LOGICA DI POSIZIONAMENTO */
+        .card {
+            position: absolute;
+            top: 10px; left: 10px;
+            width: 280px;
+            height: 180px; 
+            background: white;
+            z-index: 20; 
+            transition: all 0.9s cubic-bezier(0.19, 1, 0.22, 1);
+            padding: 40px 20px;
+            box-sizing: border-box;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            border-radius: 2px;
+        }
+
+        .envelope.open .card {
+            /* Salita calibrata: 15% dal top dello schermo */
+            transform: translateY(calc(-100vh + 120px + 15%)); 
+            height: 75vh;
+            max-height: 600px;
+            z-index: 60; 
+            opacity: 1;
+            visibility: visible;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        /* CONTENUTI */
+        .intro { font-size: 0.75em; text-transform: uppercase; color: #aaa; letter-spacing: 2.5px; margin-bottom: 10px; }
+
+        h1 { font-family: 'Great Vibes', cursive; color: var(--olive-dark); font-size: 3.2em; margin: 10px 0; font-weight: 400; line-height: 1; }
+        
+        .invito-testo { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1em; color: var(--text-color); margin: 20px 0; }
+
+        .big-date { font-weight: 600; color: var(--olive-dark); font-size: 1.2em; border-top: 1px solid #f2f2f2; border-bottom: 1px solid #f2f2f2; padding: 15px 0; margin: 25px 0; }
+
+        .location-box { margin: 30px 0; font-size: 1em; color: #333; line-height: 1.5; }
+        .location-box strong { display: block; color: var(--olive-dark); font-size: 1.1em; text-transform: uppercase; margin-bottom: 5px; }
+
+        .btn-maps {
+            display: inline-block;
+            margin-top: 10px;
+            color: var(--olive-dark);
+            text-decoration: none;
+            font-size: 0.85em;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 1px solid var(--olive-light);
+            background: #fff;
+        }
+
+        .whatsapp-btn { 
+            background: #25D366; font-weight: 600; padding: 18px; display: block; 
+            margin: 35px 0; text-align: center; color: white; border-radius: 8px; text-decoration: none; 
+        }
+
+        .sezione-elegante {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.25em;
+            color: var(--text-color);
+            line-height: 1.4;
+            margin: 40px 0 25px 0;
+        }
+
+        .luna-miele {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.15em;
+            color: var(--text-color);
+            margin-bottom: 15px;
+        }
+
+        .iban { 
+            display: block; font-family: monospace; font-weight: bold; 
+            color: var(--olive-dark); font-size: 1.05em; margin: 10px 0; font-style: normal;
+        }
+
+        .note-final {
+            font-size: 0.85em; color: #888; margin-top: 40px; font-style: italic;
+            border-top: 1px solid #f0f0f0; padding: 20px 0 40px 0;
+        }
+
+        .click-hint {
+            text-align: center; color: var(--olive-dark); font-size: 0.8em;
+            letter-spacing: 2px; margin-bottom: 20px; animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-8px);}
+        }
+
+        .card::-webkit-scrollbar { width: 4px; }
+        .card::-webkit-scrollbar-thumb { background: var(--olive-light); }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <div class="click-hint">CLICCA PER APRIRE</div>
+        
+        <div class="envelope" id="envelope" onclick="openEnvelope()">
+            <div class="seal"><span>D & S</span></div>
+
+            <div class="card" onclick="event.stopPropagation()">
+                <p class="intro">Con tanta gioia</p>
+                <h1>Samantha <br>&<br> Domenico</h1>
+                
+                <p class="invito-testo">sono lieti di invitarvi al loro matrimonio</p>
+
+                <div class="big-date">
+                    SABATO 27 GIUGNO 2026<br>ALLE ORE 15:00
+                </div>
+
+                <div class="location-box">
+                    <strong>💍 La Cerimonia</strong>
+                    Convento SS. Crocifisso dei Padri Cappuccini<br>
+                    Vico del Gargano (FG)
+                    <br>
+                    <a href="https://maps.app.goo.gl/ywuUMdcmoVRpGzur5?g_st=ic" target="_blank" class="btn-maps">📍 Indicazioni stradali</a>
+                </div>
+
+                <div class="location-box">
+                    <strong>🥂 I Festeggiamenti</strong>
+                    Proseguiranno alla<br>
+                    Locanda del Carrubo, Mattinata (FG)
+                    <br>
+                    <a href="https://maps.app.goo.gl/ywuUMdcmoVRpGzur5?g_st=ic" target="_blank" class="btn-maps">📍 Indicazioni stradali</a>
+                </div>
+
+                <a href="https://wa.me/393923060646?text=Ciao!%20Confermiamo%20con%20immensa%20gioia!" target="_blank" class="whatsapp-btn">
+                    📱 CONFERMA LA PRESENZA
+                </a>
+
+                <div class="sezione-elegante">
+                    Il regalo più bello sarà la vostra presenza in questo giorno speciale.
+                </div>
+
+                <div class="luna-miele">
+                    Se lo desiderate, potrete contribuire alla nostra Luna di Miele:
+                    <span class="iban">IT38E0503430280000000210295</span>
+                    <small style="font-style: normal; font-family: Montserrat; font-size: 0.8em; color: #999;">
+                        Intestato a: Domenico Biscotti & Samantha Iacovone
+                    </small>
+                </div>
+                
+                <p class="note-final">
+                    Vi chiediamo gentilmente conferma entro il 30 Aprile e di segnalarci eventuali intolleranze alimentari e allergie.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openEnvelope() {
+            const envelope = document.getElementById('envelope');
+            const hint = document.querySelector('.click-hint');
+            envelope.classList.toggle('open');
+            hint.style.opacity = envelope.classList.contains('open') ? '0' : '1';
+        }
+    </script>
+</body>
+</html>
